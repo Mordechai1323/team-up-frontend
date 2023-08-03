@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #222831;
+  margin: 0;
+
+  padding-top: 5vh;
+  padding-left: 15vw;
+  font-family: 'Open Sans', sans-serif;
+  /* overflow: scroll;
+  overflow-x: hidden;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 15px;
+  }
+
+Page not found, 404
+  &::-webkit-scrollbar-thumb {
+    background: #eeeeee;
+    border-radius: 4px;
+  }
+
+
+  &::-webkit-scrollbar-track:horizontal {
+    background-color: white;
+    box-shadow: inset 0 0 2px 2px gainsboro;
+  } */
+  
+}
