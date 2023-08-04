@@ -11,10 +11,11 @@ interface GroupOpenProps {
   board?: IBoard;
   group: IGroup;
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   showTasksHandler: (groupID: string) => Promise<void>;
 }
 
-const GroupOpen = ({ board, setGroups, group, showTasksHandler }: GroupOpenProps) => {
+const GroupOpen = ({ board, setGroups, setOriginalGroups, group, showTasksHandler }: GroupOpenProps) => {
   const targetRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
 
@@ -53,7 +54,7 @@ const GroupOpen = ({ board, setGroups, group, showTasksHandler }: GroupOpenProps
 
       <i onClick={() => showTasksHandler(group._id)} className='fa-solid fa-chevron-down'></i>
       <GroupName group={group} setGroups={setGroups} />
-      <Tasks board={board} setGroups={setGroups} group={group} />
+      <Tasks board={board} setGroups={setGroups} setOriginalGroups={setOriginalGroups} group={group} />
     </GroupStyle>
   );
 };

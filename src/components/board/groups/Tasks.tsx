@@ -10,9 +10,10 @@ interface TasksProps {
   board?: IBoard;
   group: IGroup;
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
 }
 
-const Tasks = ({ board, group, setGroups }: TasksProps) => {
+const Tasks = ({ board, group, setGroups, setOriginalGroups }: TasksProps) => {
   return (
     <TasksStyle>
       <thead>
@@ -26,9 +27,16 @@ const Tasks = ({ board, group, setGroups }: TasksProps) => {
       </thead>
       <tbody>
         {group?.tasks?.map((task) => (
-          <Task key={task?._id} board={board} setGroups={setGroups} groupID={group?._id} task={task} />
+          <Task
+            key={task?._id}
+            board={board}
+            setGroups={setGroups}
+            setOriginalGroups={setOriginalGroups}
+            groupID={group?._id}
+            task={task}
+          />
         ))}
-        <AddTask groupID={group?._id} setGroups={setGroups} />
+        <AddTask groupID={group?._id} setGroups={setGroups} setOriginalGroups={setOriginalGroups} />
       </tbody>
     </TasksStyle>
   );

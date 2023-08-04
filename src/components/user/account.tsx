@@ -9,7 +9,7 @@ import Header from '../header/Header';
 import useAuth from '../../hooks/useAuth';
 
 interface ShareWith {
-  _id: string
+  _id: string;
   user_id: string;
   name: string;
   email: string;
@@ -78,7 +78,7 @@ const Account = () => {
     <>
       <Header getBoards={getBoards} />
       <SideBar boards={boards} setBoards={setBoards} getBoards={getBoards} boardID={boardID} setBoardID={setBoardID} />
-      {boardID && <Board getBoards={getBoards} boards={boards} boardID={boardID} />}
+      {boardID && <Board getBoards={getBoards} boards={boards} boardID={boardID} key={boardID} />}
     </>
   );
 };

@@ -10,14 +10,15 @@ interface GroupProps {
   board?: IBoard;
   group: IGroup;
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  showTasksHandler: (groupID: string) => Promise<void>
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
+  showTasksHandler: (groupID: string) => Promise<void>;
 }
 
-const Group = ({ board, setGroups, group, showTasksHandler }: GroupProps) => {
+const Group = ({ board, setGroups, setOriginalGroups, group, showTasksHandler }: GroupProps) => {
   return (
     <GroupStyle>
       {group?.is_open ? (
-        <GroupOpen board={board} group={group} setGroups={setGroups} showTasksHandler={showTasksHandler} />
+        <GroupOpen board={board} group={group} setGroups={setGroups} setOriginalGroups={setOriginalGroups} showTasksHandler={showTasksHandler} />
       ) : (
         <GroupClose board={board} group={group} setGroups={setGroups} showTasksHandler={showTasksHandler} />
       )}

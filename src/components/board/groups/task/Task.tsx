@@ -8,15 +8,15 @@ import TaskName from './TaskName';
 import TaskMenuPopup from './TaskMenuPopup';
 import Person from './Person';
 
-
 interface TaskProps {
   board?: IBoard;
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   groupID: string;
   task: ITask;
 }
 
-const Task = ({ board, setGroups, groupID, task }: TaskProps) => {
+const Task = ({ board, setGroups, setOriginalGroups, groupID, task }: TaskProps) => {
   const targetRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
   const [isTaskMenuOpen, setIsTaskMenuOpen] = useState(false);
@@ -53,12 +53,19 @@ const Task = ({ board, setGroups, groupID, task }: TaskProps) => {
           className='fa-solid fa-ellipsis '
         ></i>
         {isTaskMenuOpen && (
-          <TaskMenuPopup setGroups={setGroups} groupID={groupID} taskID={task?._id} popupRef={popupRef} taskName={task?.name} />
+          <TaskMenuPopup
+            setGroups={setGroups}
+            setOriginalGroups={setOriginalGroups}
+            groupID={groupID}
+            taskID={task?._id}
+            popupRef={popupRef}
+            taskName={task?.name}
+          />
         )}
       </td>
       <TaskName name={task?.name} groupID={groupID} taskID={task?._id} />
-      <Person board={board} setGroups={setGroups} groupID={groupID} task={task} />
-      <TaskStatus status={task?.status} taskID={task?._id} groupID={groupID} setGroups={setGroups} />
+      <Person board={board} setGroups={setGroups} setOriginalGroups={setOriginalGroups} groupID={groupID} task={task} />
+      <TaskStatus status={task?.status} taskID={task?._id} groupID={groupID} setGroups={setGroups} setOriginalGroups={setOriginalGroups} />
       <td></td>
     </TaskStyle>
   );

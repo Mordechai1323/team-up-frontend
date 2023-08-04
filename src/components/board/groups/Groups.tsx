@@ -9,14 +9,15 @@ interface GroupsProps {
   board?: IBoard;
   groups: IGroup[];
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  showTasksHandler: (groupID: string) => Promise<void>
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
+  showTasksHandler: (groupID: string) => Promise<void>;
 }
 
-const Groups = ({ board, groups, setGroups, showTasksHandler }: GroupsProps) => {
+const Groups = ({ board, groups, setGroups, setOriginalGroups, showTasksHandler }: GroupsProps) => {
   return (
     <GroupsStyle>
       {groups?.map((group) => (
-        <Group key={group._id} board={board} group={group} setGroups={setGroups} showTasksHandler={showTasksHandler} />
+        <Group key={group._id} board={board} group={group} setGroups={setGroups} setOriginalGroups={setOriginalGroups} showTasksHandler={showTasksHandler} />
       ))}
     </GroupsStyle>
   );

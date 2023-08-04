@@ -6,26 +6,32 @@ import { IGroup } from '../../Board';
 
 interface TaskMenuPopupProps {
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   groupID: string;
   taskID: string;
   popupRef: React.MutableRefObject<any>;
   taskName: string;
 }
 
-const TaskMenuPopup = ({ setGroups, groupID, taskID, popupRef, taskName }: TaskMenuPopupProps) => {
+const TaskMenuPopup = ({ setGroups, setOriginalGroups, groupID, taskID, popupRef, taskName }: TaskMenuPopupProps) => {
   const axiosPrivate = useAxiosPrivate();
   const controller = new AbortController();
 
+  const updateTasks = () => {
+    const deleteTask = (group: IGroup) => {
+      if (group?._id === groupID) {
+        const newTasks = group?.tasks?.filter((task) => task._id !== taskID);
+        return { ...group, tasks: newTasks };
+      }
+      return group;
+    };
+    setGroups((prevState) => prevState?.map(deleteTask));
+    setOriginalGroups((prevState) => prevState?.map(deleteTask));
+  };
+
   const deleteTaskHandler = async () => {
     try {
-      setGroups((prevState) => {
-        return prevState?.map((group) => {
-          if (group?._id === groupID) {
-            const newTasks = group?.tasks?.filter((task) => task._id !== taskID);
-            return { ...group, tasks: newTasks };
-          } else return group;
-        });
-      });
+      updateTasks();
       const response = await axiosPrivate.delete(`groups/tasks/deleteTask/?groupID=${groupID}&taskID=${taskID}`, {
         signal: controller.signal,
       });

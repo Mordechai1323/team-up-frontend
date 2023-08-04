@@ -47,7 +47,7 @@ const Board = ({ getBoards, boardID, boards }: BoardProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [sorting, setSorting] = useState({ sortBy: '', filterByPerson: '' });
   const [groups, setGroups] = useState<IGroup[]>([]);
-  const [originalGroups, setOriginalGroups] = useState([]);
+  const [originalGroups, setOriginalGroups] = useState<IGroup[]>([]);
   const [board, setBoard] = useState<IBoard>();
 
   const controller = new AbortController();
@@ -77,34 +77,34 @@ const Board = ({ getBoards, boardID, boards }: BoardProps) => {
     }
   };
 
-  const getCurrentBoardHandler = () => {
+  const getCurrBoardHandler = () => {
     if (auth?.role === 'team_leader') {
       for (const member of boards as ITeamLeaderBoards[]) {
-        const temp = member.boards.find((board) => board._id === boardID);
-        if (temp) {
-          setBoard(temp);
+        const currBoard = member.boards.find((board) => board?._id === boardID);
+        if (currBoard) {
+          setBoard(currBoard);
           break;
         }
       }
     } else {
-      const board = (boards as IBoard[])?.find((board) => board?._id === boardID);
-      if (board) setBoard(board);
+      const currBoard = (boards as IBoard[])?.find((board) => board?._id === boardID);
+      if (currBoard) setBoard(currBoard);
     }
   };
 
   useEffect(() => {
     getGroups();
-    getCurrentBoardHandler();
+    getCurrBoardHandler();
   }, [boardID]);
 
   useEffect(() => {
-    getCurrentBoardHandler();
+    getCurrBoardHandler();
   }, [boards]);
 
   const filterByPersonHandler = async () => {
     if (sorting?.filterByPerson) {
       const updateArr = originalGroups?.reduce((acc: IGroup[], group: IGroup) => {
-        const tasksFiltered = group?.tasks?.filter((task: ITask) => task?.in_care?.includes(sorting?.filterByPerson));
+        const tasksFiltered = group?.tasks?.filter((task) => task?.in_care?.includes(sorting?.filterByPerson));
         if (tasksFiltered?.length > 0) acc.push({ ...group, tasks: tasksFiltered });
         return acc;
       }, []);
@@ -113,15 +113,18 @@ const Board = ({ getBoards, boardID, boards }: BoardProps) => {
   };
   const sortByHandler = async () => {
     if (sorting?.sortBy) {
-      const updateArr = JSON.parse(JSON.stringify(originalGroups))?.map((group: IGroup) => {
-        if (sorting?.sortBy === 'name') return { ...group, tasks: group?.tasks?.sort((a, b) => (a?.name > b?.name ? 1 : -1)) };
-        if (sorting?.sortBy === 'date created')
-          return { ...group, tasks: group?.tasks?.sort((a: ITask, b: ITask) => (a?.date_created > b?.date_created ? 1 : -1)) };
-        if (sorting?.sortBy === 'status') return { ...group, tasks: group?.tasks?.sort((a, b) => (a?.status?.name >= b?.status?.name ? 1 : -1)) };
+      const updateArr = [...originalGroups]?.map((group: IGroup) => {
+        const sortBy = sorting.sortBy as keyof ITask;
+        let sortedTasks: ITask[];
+        if (sortBy === 'status') sortedTasks = [...group.tasks].sort((a, b) => (a?.status?.name >= b?.status?.name ? 1 : -1));
+        else sortedTasks = [...group.tasks].sort((a, b) => (a?.[sortBy] > b?.[sortBy] ? 1 : -1));
+
+        return { ...group, tasks: sortedTasks };
       });
       setGroups(updateArr);
     } else setGroups(originalGroups);
   };
+
   useEffect(() => {
     filterByPersonHandler();
   }, [sorting.filterByPerson]);
@@ -135,7 +138,13 @@ const Board = ({ getBoards, boardID, boards }: BoardProps) => {
     <BoardsStyle>
       <BoardsCenterStyle>
         <Top board={board} getBoards={getBoards} setGroups={setGroups} sorting={sorting} setSorting={setSorting} />
-        <Groups board={board} groups={groups} setGroups={setGroups} showTasksHandler={showTasksHandler} />
+        <Groups
+          board={board}
+          groups={groups}
+          setGroups={setGroups}
+          setOriginalGroups={setOriginalGroups}
+          showTasksHandler={showTasksHandler}
+        />
       </BoardsCenterStyle>
     </BoardsStyle>
   );

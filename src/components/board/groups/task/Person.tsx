@@ -8,11 +8,12 @@ import { IGroup, ITask } from '../../Board';
 interface PersonProps {
   board?: IBoard;
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   groupID: string;
   task: ITask;
 }
 
-const Person = ({ board, setGroups, groupID, task }: PersonProps) => {
+const Person = ({ board, setGroups, setOriginalGroups, groupID, task }: PersonProps) => {
   const axiosPrivate = useAxiosPrivate();
   const controller = new AbortController();
   const targetRef = useRef<any>(null);
@@ -42,22 +43,27 @@ const Person = ({ board, setGroups, groupID, task }: PersonProps) => {
     setIsPersonOpen(false);
   };
 
+  const updateTaskAddInCare = (email: string) => {
+    const updateTask = (group: IGroup) => {
+      if (group?._id === groupID) {
+        const updatedTasks = group?.tasks?.map((item) => {
+          if (item?._id === task?._id && !item?.in_care?.includes(email)) {
+            return { ...task, in_care: [...task?.in_care, email] };
+          }
+          return item;
+        });
+        return { ...group, tasks: updatedTasks };
+      }
+      return group;
+    };
+    
+    setGroups((prevState) => prevState?.map(updateTask));
+    setOriginalGroups((prevState) => prevState?.map(updateTask));
+  };
+
   const addInCareHandler = async (email: string) => {
     try {
-      setGroups((prevState) => {
-        return prevState?.map((group) => {
-          if (group?._id === groupID) {
-            const updateTasks = group.tasks.map((item) => {
-              if (item?._id === task._id) {
-                if (!item?.in_care?.includes(email)) return { ...item, in_care: [...item?.in_care, email] };
-              }
-              return item;
-            });
-            return { ...group, tasks: updateTasks };
-          }
-          return group;
-        });
-      });
+      updateTaskAddInCare(email);
       const formData = { user_email: email };
       const url = `groups/tasks/addInCare/?groupID=${groupID}&taskID=${task?._id}`;
       await axiosPrivate.post(url, formData, {
@@ -68,25 +74,28 @@ const Person = ({ board, setGroups, groupID, task }: PersonProps) => {
     }
   };
 
+  const updateTaskDeleteInCare = (email: string) => {
+    const updateTask = (group: IGroup) => {
+      if (group?._id === groupID) {
+        const updatedTasks = group?.tasks?.map((item) => {
+          if (item?._id === task?._id && item?.in_care?.includes(email)) {
+            const updateInCare = item.in_care.filter((in_care) => in_care !== email);
+            return { ...item, in_care: updateInCare };
+          }
+          return item;
+        });
+        return { ...group, tasks: updatedTasks };
+      }
+      return group;
+    };
+
+    setGroups((prevState) => prevState?.map(updateTask));
+    setOriginalGroups((prevState) => prevState?.map(updateTask));
+  };
+
   const deleteInCareHandler = async (email: string) => {
     try {
-      setGroups((prevState) => {
-        return prevState?.map((group) => {
-          if (group?._id === groupID) {
-            const updateTasks = group?.tasks?.map((item) => {
-              if (item._id === task._id) {
-                if (item?.in_care?.includes(email)) {
-                  const updateInCare = item.in_care.filter((in_care) => in_care !== email);
-                  return { ...item, in_care: updateInCare };
-                }
-              }
-              return item;
-            });
-            return { ...group, tasks: updateTasks };
-          }
-          return group;
-        });
-      });
+      updateTaskDeleteInCare(email);
       const formData = { user_email: email };
       const url = `groups/tasks/deleteInCare/?groupID=${groupID}&taskID=${task?._id}`;
       await axiosPrivate.post(url, formData, {

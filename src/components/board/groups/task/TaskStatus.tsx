@@ -12,6 +12,7 @@ interface IStatus {
 interface TaskStatusProps {
   status: IStatus;
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   groupID: string;
   taskID: string;
 }
@@ -19,7 +20,7 @@ interface StatusStyleProps {
   $background: string;
 }
 
-const TaskStatus = ({ status, groupID, taskID, setGroups }: TaskStatusProps) => {
+const TaskStatus = ({ status, groupID, taskID, setGroups, setOriginalGroups }: TaskStatusProps) => {
   const axiosPrivate = useAxiosPrivate();
   const targetRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
@@ -56,16 +57,22 @@ const TaskStatus = ({ status, groupID, taskID, setGroups }: TaskStatusProps) => 
     setIsOptionOpen(false);
   };
 
+  const updateTaskStatus = (status: IStatus) => {
+    const updateStatus = (group: IGroup) => {
+      if (group?._id === groupID) {
+        const newTasks = group?.tasks?.map((task) => (task?._id === taskID ? { ...task, status } : task));
+        return { ...group, tasks: newTasks };
+      }
+      return group;
+    };
+
+    setGroups((prevState) => prevState?.map(updateStatus));
+    setOriginalGroups((prevState) => prevState?.map(updateStatus));
+  };
+
   const changeStatusHandler = async (status: IStatus) => {
-    setGroups((prevState) => {
-      return prevState?.map((group) => {
-        if (group?._id === groupID) {
-          const newTasks = group?.tasks?.map((task) => (task?._id === taskID ? { ...task, status } : task));
-          return { ...group, tasks: newTasks };
-        } else return group;
-      });
-    });
     try {
+      updateTaskStatus(status);
       const url = `groups/tasks/changeStatus/?groupID=${groupID}&taskID=${taskID}`;
       await axiosPrivate.put(url, status, {
         signal: controller.signal,

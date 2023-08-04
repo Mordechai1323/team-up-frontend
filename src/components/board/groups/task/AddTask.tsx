@@ -2,19 +2,29 @@ import { useState, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivet';
 
-import { IGroup } from '../../Board';
+import { IGroup, ITask } from '../../Board';
 
 interface AddTaskProps {
   groupID: string;
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
 }
 
-const AddTask = ({ groupID, setGroups }: AddTaskProps) => {
+const AddTask = ({ groupID, setGroups, setOriginalGroups }: AddTaskProps) => {
   const axiosPrivate = useAxiosPrivate();
 
   const [task, setTask] = useState('');
 
   const controller = new AbortController();
+
+  const updateTasks = (newTask: ITask) => {
+    const addTask = (group: IGroup) => {
+      if (group?._id === groupID) return { ...group, tasks: [...group?.tasks, newTask] };
+      return group;
+    };
+    setGroups((prevState) => prevState?.map(addTask));
+    setOriginalGroups((prevState) => prevState?.map(addTask));
+  };
 
   const onSubmitHandler = async () => {
     if (task.trim().length > 0) {
@@ -26,12 +36,7 @@ const AddTask = ({ groupID, setGroups }: AddTaskProps) => {
           signal: controller.signal,
         });
         const newTask = response?.data?.tasks[response?.data?.tasks?.length - 1];
-        setGroups((prevState) => {
-          return prevState?.map((group) => {
-            if (group?._id === groupID) return { ...group, tasks: [...group?.tasks, newTask] };
-            else return group;
-          });
-        });
+        updateTasks(newTask);
       } catch (err: any) {
         console.log('server error', err?.response?.data);
       }
