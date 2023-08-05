@@ -10,6 +10,7 @@ import Account from './components/user/account';
 
 import RequireAuth from './components/admin/requireAuth';
 import PersistLogin from './components/admin/persistLogin.';
+import PanelAdmin from './components/admin/PanelAdmin.tsx';
 
 import './App.css';
 
@@ -25,7 +26,9 @@ function App() {
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={['user', 'team_leader']} />}></Route>
           <Route index element={<Account />} />
-          <Route element={<RequireAuth allowedRoles={['admin']} />}>{/* <Route path='admin' element={<Admin />} /> */}</Route>
+          <Route element={<RequireAuth allowedRoles={['admin']} />}>
+            <Route path='admin' element={<PanelAdmin />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

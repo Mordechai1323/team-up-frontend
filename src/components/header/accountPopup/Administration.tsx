@@ -1,8 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Administration = () => {
+  const nav = useNavigate();
   return (
-    <AdministrationStyle>
+    <AdministrationStyle onClick={() => nav('admin')}>
       <i className='fa-solid fa-gear'></i>
       <span>Administration</span>
     </AdministrationStyle>
