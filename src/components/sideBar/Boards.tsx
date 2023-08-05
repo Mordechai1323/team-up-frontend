@@ -18,6 +18,7 @@ const Boards = ({ setBoards, boards, boardID, setBoardID }: BoardsProps) => {
     <BoardsStyle key={boardID}>
       {boards?.map((board) => {
         if (auth.role === 'team_leader') {
+          console.log(boardID);
           const teamLeaderBoard = board as ITeamLeaderBoards;
           return (
             <Fragment key={teamLeaderBoard?.name}>
@@ -31,7 +32,7 @@ const Boards = ({ setBoards, boards, boardID, setBoardID }: BoardsProps) => {
                   isCurrentBoard={boardID === board?._id}
                 />
               ))}
-              {teamLeaderBoard?.boards.length === 0 && <h6>Not found boards</h6>}
+              {teamLeaderBoard?.boards?.length === 0 && <h6>Not found boards</h6>}
             </Fragment>
           );
         } else {

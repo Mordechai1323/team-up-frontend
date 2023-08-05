@@ -1,8 +1,7 @@
-
 export default function Unauthorized() {
   return (
-    <div>
-        <h1>unauthorized</h1>
+    <div style={{ color: '#EEEEEE', margin: '25vh 25vw' }}>
+      <h1>unauthorized</h1>
     </div>
-  )
+  );
 }

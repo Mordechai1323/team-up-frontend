@@ -170,7 +170,7 @@ const PersonStyle = styled.td`
         margin: 0;
         padding: 0;
         & li {
-          width: 40%;
+          width: 41%;
           background: #eeeeee;
           color: #222831;
           font-size: 0.75em;

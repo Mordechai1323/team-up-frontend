@@ -43,7 +43,7 @@ const RolePopup = ({ setUsers, user }: RolePopupProps) => {
   };
 
   const changeRoleHandler = async (newRole: string, userId: string) => {
-    setUsers((prevState) => prevState?.map((userI) => (userI._id === user._id ? { ...user, role: newRole } : userI)));
+    setUsers((prevState) => prevState?.map((userI) => (userI?._id === user?._id ? { ...user, role: newRole } : userI)));
     let url = `/users/changeRole/?user_id=${userId}&role=${newRole}`;
     try {
       await axiosPrivate.patch(url, {
@@ -72,7 +72,7 @@ const RolePopup = ({ setUsers, user }: RolePopupProps) => {
                 key={option}
                 onClick={() => {
                   hideRolePopupHandler();
-                  changeRoleHandler(option, user._id);
+                  changeRoleHandler(option, user?._id);
                 }}
               >
                 {option}

@@ -20,9 +20,9 @@ const User = ({ setUsers, user, index }: UserProps) => {
 
   return (
     <UserStyle>
-      <td>{index}</td>
-      <td>{user.name}</td>
-      <td>{user.email}</td>
+      <td>{index + 1}</td>
+      <td>{user?.name}</td>
+      <td>{user?.email}</td>
       <RolePopup setUsers={setUsers} user={user} />
       <td>{formattedDate}</td>
     </UserStyle>
