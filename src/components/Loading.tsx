@@ -19,8 +19,8 @@ const Loading = ({ width, height }: LoadingProps) => {
 export default Loading;
 
 const LoadingStyle = styled.div<LoadingProps>`
-  width: ${(props) => (props?.width ? props?.width : '100vw')};
-  height: ${(props) => (props?.height ? props?.height : '100vh')};
+  width: ${(props) => (props?.width ? props?.width : '75vw')};
+  height: ${(props) => (props?.height ? props?.height : '95vh')};
   display: flex;
   align-items: center;
   justify-content: center;

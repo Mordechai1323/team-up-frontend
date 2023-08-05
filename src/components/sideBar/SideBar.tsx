@@ -9,6 +9,7 @@ import AddBoard from './AddBoard';
 import Boards from './Boards';
 import AddBoardForm from './AddBoardForm';
 import useAxiosPrivate from '../../hooks/useAxiosPrivet';
+import useAuth from '../../hooks/useAuth';
 
 interface SideBarProps {
   setBoards: Dispatch<SetStateAction<IBoard[] | ITeamLeaderBoards[]>>;
@@ -20,6 +21,7 @@ interface SideBarProps {
 
 const SideBar = ({ setBoards, getBoards, boards, boardID, setBoardID }: SideBarProps) => {
   const axiosPrivate = useAxiosPrivate();
+  const { auth } = useAuth();
   const controller = new AbortController();
   const [isAddBoardOpen, setIsAddBoardOpen] = useState(false);
 
@@ -33,7 +35,8 @@ const SideBar = ({ setBoards, getBoards, boards, boardID, setBoardID }: SideBarP
 
   const onSearchHandler = async (search: string) => {
     try {
-      const response = await axiosPrivate.get(`/boards/getMyBoards/?s=${search}`, {
+      const url = auth.role === 'team_leader' ? `/boards/getAllTeamBoards/?s=${search}` : `/boards/getMyBoards/?s=${search}`;
+      const response = await axiosPrivate.get(url, {
         signal: controller.signal,
       });
 

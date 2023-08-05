@@ -12,12 +12,17 @@ interface MyTeamFormProps {
   onClose: () => void;
   getBoards: () => Promise<void>;
 }
-interface TeamMember {
+interface ITeamMember {
   date_created: string;
   email: string;
   name: string;
   role: string;
   _id: string;
+}
+interface ITeam {
+  team_leader_id: string;
+  name: string;
+  team_members: string[];
 }
 
 const MyTeamForm = ({ onClose, getBoards }: MyTeamFormProps) => {
@@ -25,7 +30,8 @@ const MyTeamForm = ({ onClose, getBoards }: MyTeamFormProps) => {
   const controller = new AbortController();
   const { auth, setAuth } = useAuth();
 
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [teamMembers, setTeamMembers] = useState<ITeamMember[]>([]);
+  const [team, setTeam] = useState<ITeam>();
   const [isLoading, setIsLoading] = useState(true);
   const [email, setEmail] = useState('');
   const [emailErr, setEmailErr] = useState('');
@@ -35,8 +41,8 @@ const MyTeamForm = ({ onClose, getBoards }: MyTeamFormProps) => {
       const response = await axiosPrivate.get('/teams/', {
         signal: controller.signal,
       });
-      setTeamMembers(response.data);
-      console.log(response.data);
+      setTeamMembers(response.data.teamMembers);
+      setTeam(response.data.team);
       setIsLoading(false);
     } catch (err: any) {
       console.log('server error', err.response.data);
@@ -90,6 +96,7 @@ const MyTeamForm = ({ onClose, getBoards }: MyTeamFormProps) => {
         });
         console.log(response.data);
         getMyTeamHandler();
+        getBoards();
       } catch (err: any) {
         console.log('server error', err.response.data);
         setEmailErr(err.response.data);
@@ -105,6 +112,7 @@ const MyTeamForm = ({ onClose, getBoards }: MyTeamFormProps) => {
       });
       console.log(response.data);
       getMyTeamHandler();
+      getBoards();
     } catch (err: any) {
       console.log('server error', err.response.data);
     }
@@ -119,7 +127,7 @@ const MyTeamForm = ({ onClose, getBoards }: MyTeamFormProps) => {
           <div className='icon'>
             <i onClick={onClose} className='fa-solid fa-xmark'></i>
           </div>
-          <h2>My Team</h2>
+          <h2>{team?.name} Team</h2>
           <InputProject
             label={'Add Teams Members'}
             type={'email'}
@@ -161,6 +169,9 @@ const MyTeamFormStyle = styled.form`
     display: flex;
     justify-content: right;
     cursor: pointer;
+    & i {
+      font-size: 1.5em;
+    }
   }
   & h2 {
     width: 100%;

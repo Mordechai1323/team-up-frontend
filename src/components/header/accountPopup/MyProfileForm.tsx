@@ -132,6 +132,9 @@ const MyProfileFormStyle = styled.form`
     display: flex;
     justify-content: right;
     cursor: pointer;
+    & i{
+      font-size: 1.5em;
+    }
   }
   & h2 {
     width: 100%;

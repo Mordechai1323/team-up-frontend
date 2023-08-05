@@ -15,7 +15,7 @@ interface BoardsProps {
 const Boards = ({ setBoards, boards, boardID, setBoardID }: BoardsProps) => {
   const { auth } = useAuth();
   return (
-    <BoardsStyle>
+    <BoardsStyle key={boardID}>
       {boards?.map((board) => {
         if (auth.role === 'team_leader') {
           const teamLeaderBoard = board as ITeamLeaderBoards;
@@ -31,6 +31,7 @@ const Boards = ({ setBoards, boards, boardID, setBoardID }: BoardsProps) => {
                   isCurrentBoard={boardID === board?._id}
                 />
               ))}
+              {teamLeaderBoard?.boards.length === 0 && <h6>Not found boards</h6>}
             </Fragment>
           );
         } else {
@@ -58,7 +59,13 @@ const BoardsStyle = styled.div`
 
   & h4 {
     color: #eeeeee;
-    background: #fd711478;
+    background: #393e46bf;
     border-radius: 4px;
+    text-align: center;
+  }
+
+  & h6 {
+    color: #eeeeee;
+    text-align: center;
   }
 `;

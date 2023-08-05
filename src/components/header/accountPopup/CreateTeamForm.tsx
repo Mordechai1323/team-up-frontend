@@ -60,9 +60,6 @@ const CreateTeamForm = ({ getBoards, onClose }: CreateTeamFormProps) => {
         const response = await axiosPrivate.post(`/teams`, formDate, {
           signal: controller.signal,
         });
-        // setAuth((prevState) => {
-        //   return { ...prevState, accessToken: response.data.accessToken, role: 'team_leader' };
-        // });
         setAuth({
           name: response.data.name,
           accessToken: response.data.accessToken,
@@ -70,6 +67,7 @@ const CreateTeamForm = ({ getBoards, onClose }: CreateTeamFormProps) => {
         });
       } catch (err: any) {
         console.log('server error', err.response.data);
+        setEmailErr(err.response.data.err);
       }
     }
   };
@@ -129,6 +127,9 @@ const CreateTeamFormStyle = styled.form`
     display: flex;
     justify-content: right;
     cursor: pointer;
+    & i {
+      font-size: 1.5em;
+    }
   }
   & h2 {
     width: 100%;

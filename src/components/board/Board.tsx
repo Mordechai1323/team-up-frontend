@@ -153,7 +153,7 @@ const Board = ({ getBoards, boardID, boards }: BoardProps) => {
 export default Board;
 
 const BoardsStyle = styled.div`
-  width: 85vw;
+  width: 84vw;
   min-height: 95vh;
   padding-top: 2vh;
   padding-bottom: 2vh;
