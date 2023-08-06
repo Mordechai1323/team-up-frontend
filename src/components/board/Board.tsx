@@ -52,17 +52,6 @@ const Board = ({ getBoards, boardID, boards }: BoardProps) => {
 
   const controller = new AbortController();
 
-  const showTasksHandler = async (groupID: string) => {
-    setGroups(groups.map((group) => (group?._id === groupID ? { ...group, is_open: !group?.is_open } : group)));
-    try {
-      await axiosPrivate.post(`/groups/changeIsOpen/?groupID=${groupID}`, {
-        signal: controller.signal,
-      });
-    } catch (err: any) {
-      console.log('server error', err?.response?.data);
-    }
-  };
-
   const getGroups = async () => {
     try {
       const response = await axiosPrivate.get(`/groups/?boardID=${boardID}`, {
@@ -137,14 +126,15 @@ const Board = ({ getBoards, boardID, boards }: BoardProps) => {
   ) : (
     <BoardsStyle>
       <BoardsCenterStyle>
-        <Top board={board} getBoards={getBoards} setGroups={setGroups} sorting={sorting} setSorting={setSorting} />
-        <Groups
+        <Top
           board={board}
-          groups={groups}
+          getBoards={getBoards}
           setGroups={setGroups}
           setOriginalGroups={setOriginalGroups}
-          showTasksHandler={showTasksHandler}
+          sorting={sorting}
+          setSorting={setSorting}
         />
+        <Groups board={board} groups={groups} setGroups={setGroups} setOriginalGroups={setOriginalGroups} />
       </BoardsCenterStyle>
     </BoardsStyle>
   );

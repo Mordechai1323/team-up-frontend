@@ -8,17 +8,25 @@ import Filters from './Filters';
 
 interface TopProps {
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   getBoards: () => Promise<void>;
   board?: IBoard;
   sorting: ISorting;
   setSorting: Dispatch<SetStateAction<ISorting>>;
 }
 
-const Top = ({ setGroups, getBoards, board, sorting, setSorting }: TopProps) => {
+const Top = ({ setGroups, setOriginalGroups, getBoards, board, sorting, setSorting }: TopProps) => {
   return (
     <TopStyle>
       <Header board={board} />
-      <Filters getBoards={getBoards} board={board} setGroups={setGroups} sorting={sorting} setSorting={setSorting} />
+      <Filters
+        getBoards={getBoards}
+        board={board}
+        setGroups={setGroups}
+        setOriginalGroups={setOriginalGroups}
+        sorting={sorting}
+        setSorting={setSorting}
+      />
     </TopStyle>
   );
 };

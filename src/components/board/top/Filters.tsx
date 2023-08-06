@@ -13,13 +13,14 @@ import SortBy from './SortBy';
 
 interface FiltersProps {
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   getBoards: () => Promise<void>;
   board?: IBoard;
   sorting: ISorting;
   setSorting: Dispatch<SetStateAction<ISorting>>;
 }
 
-const Filters = ({ setGroups, getBoards, board, sorting, setSorting }: FiltersProps) => {
+const Filters = ({ setGroups, setOriginalGroups, getBoards, board, sorting, setSorting }: FiltersProps) => {
   const axiosPrivate = useAxiosPrivate();
   const [isInviteOpen, setIsInviteOpen] = useState(false);
 
@@ -31,6 +32,7 @@ const Filters = ({ setGroups, getBoards, board, sorting, setSorting }: FiltersPr
         signal: controller.signal,
       });
       setGroups((prevState) => [...prevState, response?.data]);
+      setOriginalGroups((prevState) => [...prevState, response?.data]);
     } catch (err: any) {
       console.log('server error', err?.response?.data);
     }
@@ -60,7 +62,7 @@ const Filters = ({ setGroups, getBoards, board, sorting, setSorting }: FiltersPr
       <AddBoard width='8%' text='New group' height='100%' onClick={addGroupHandler} />
       <Search width='10%' onSearchHandler={onSearchHandler} />
       <FilterByPerson icon='fa-solid fa-circle-user' text='Person' board={board} sorting={sorting} setSorting={setSorting} />
-      <SortBy icon='fa-solid fa-arrow-down-wide-short' text='Sort'  sorting={sorting} setSorting={setSorting} />
+      <SortBy icon='fa-solid fa-arrow-down-wide-short' text='Sort' sorting={sorting} setSorting={setSorting} />
       <Invite icon='fa-solid fa-user-plus' text='Invite' onClick={showInviteHandler} />
       {isInviteOpen && <InviteForm onClose={hideInviteHandler} board={board} getBoards={getBoards} />}
     </FilterStyle>

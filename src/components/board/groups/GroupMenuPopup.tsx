@@ -8,12 +8,13 @@ import { IGroup } from '../Board';
 interface GroupMenuPopupProps {
   board?: IBoard;
   setGroups: Dispatch<SetStateAction<IGroup[]>>;
+  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   popupRef: React.MutableRefObject<any>;
   groupID: string;
   onClose: () => void;
 }
 
-const GroupMenuPopup = ({ board, setGroups, popupRef, groupID, onClose }: GroupMenuPopupProps) => {
+const GroupMenuPopup = ({ board, setGroups, setOriginalGroups, popupRef, groupID, onClose }: GroupMenuPopupProps) => {
   const axiosPrivate = useAxiosPrivate();
   const controller = new AbortController();
 
@@ -24,17 +25,19 @@ const GroupMenuPopup = ({ board, setGroups, popupRef, groupID, onClose }: GroupM
         signal: controller.signal,
       });
       setGroups((prevState) => [...prevState, response?.data]);
+      setOriginalGroups((prevState) => [...prevState, response?.data]);
     } catch (err: any) {
       console.log('server error', err.response.data);
     }
   };
 
-  const deleteGRoupHandler = async () => {
+  const deleteGroupHandler = async () => {
     try {
       await axiosPrivate.delete(`groups/?groupID=${groupID}`, {
         signal: controller.signal,
       });
       setGroups((prevState) => prevState?.filter((group) => group?._id !== groupID));
+      setOriginalGroups((prevState) => prevState?.filter((group) => group?._id !== groupID));
     } catch (err: any) {
       console.log('server error', err?.response?.data);
     }
@@ -63,7 +66,7 @@ const GroupMenuPopup = ({ board, setGroups, popupRef, groupID, onClose }: GroupM
         </li>
       </ul>
       <ul>
-        <li onClick={deleteGRoupHandler}>
+        <li onClick={deleteGroupHandler}>
           <i className='fa-regular fa-trash-can'></i>
           <span>Delete</span>
         </li>

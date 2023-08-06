@@ -48,7 +48,14 @@ const GroupOpen = ({ board, setGroups, setOriginalGroups, group, showTasksHandle
       <div className='setting'>
         <i ref={targetRef} onClick={openGroupMenuHandler} className='fa-solid fa-ellipsis '></i>
         {isGroupMenuOpen && (
-          <GroupMenuPopup board={board} setGroups={setGroups} groupID={group?._id} popupRef={popupRef} onClose={hideGroupMenuHandler} />
+          <GroupMenuPopup
+            board={board}
+            setGroups={setGroups}
+            setOriginalGroups={setOriginalGroups}
+            groupID={group?._id}
+            popupRef={popupRef}
+            onClose={hideGroupMenuHandler}
+          />
         )}
       </div>
 
