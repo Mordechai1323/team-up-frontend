@@ -10,7 +10,7 @@ interface TasksProps {
   group: IGroup;
 }
 
-const Tasks = ({ board, group}: TasksProps) => {
+const Tasks = ({ board, group }: TasksProps) => {
   return (
     <TasksStyle>
       <thead>
@@ -24,14 +24,9 @@ const Tasks = ({ board, group}: TasksProps) => {
       </thead>
       <tbody>
         {group?.tasks?.map((task) => (
-          <Task
-            key={task?._id}
-            board={board}
-            groupID={group?._id}
-            task={task}
-          />
+          <Task key={task?._id} board={board} groupID={group?._id} task={task} />
         ))}
-        <AddTask groupID={group?._id}  />
+        <AddTask groupID={group?._id} />
       </tbody>
     </TasksStyle>
   );
@@ -41,7 +36,7 @@ export default Tasks;
 
 const TasksStyle = styled.table`
   width: 80%;
-
+ border-collapse: collapse;
   & thead {
     background: #222831;
     & tr {

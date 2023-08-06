@@ -50,6 +50,8 @@ const InputStyle = styled.div`
 
     & input {
       width: 100%;
+      height: 2.5vh;
+      font-size: 1em;
       border: none;
       outline: none;
       margin-left: 8px;

@@ -20,7 +20,7 @@ const Users = () => {
   const location = useLocation();
 
   const [users, setUsers] = useState<IUser[]>([]);
-  const [sort, setShort] = useState('');
+  const [sort, setShort] = useState();
   const [reverse, setReverse] = useState(false);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -43,9 +43,7 @@ const Users = () => {
     getAllUsersHandler();
   }, [sort, reverse, search]);
 
-  return isLoading ? (
-    <Loading />
-  ) : (
+  return isLoading ? <Loading/> :(
     <UsersStyle>
       <h2>List of users</h2>
       <table>
@@ -81,6 +79,7 @@ const UsersStyle = styled.div`
     text-align: center;
   }
   & table {
+     border-collapse: collapse;
     width: 80%;
     & thead {
       background: #222831;

@@ -24,6 +24,7 @@ const HeaderStyle = styled.div`
 
   & h1 {
     font-size: 1.75em;
+    font-weight: 200;
     color: white;
   }
 `;

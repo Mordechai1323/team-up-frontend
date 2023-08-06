@@ -58,6 +58,9 @@ const TaskNameStyle = styled.td`
     border: none;
     font-size: 0.9em;
     outline: none;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
   }
 
   &:hover {

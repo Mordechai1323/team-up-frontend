@@ -18,7 +18,7 @@ const PanelAdmin = () => {
 export default PanelAdmin;
 
 const PanelAdminStyle = styled.div`
-  width: 84vw;
+  width: 90vw;
   min-height: 95vh;
   padding-top: 2vh;
   padding-bottom: 2vh;
