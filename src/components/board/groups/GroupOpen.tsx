@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { IBoard } from '../../user/account';
@@ -10,12 +10,10 @@ import GroupName from './GroupName';
 interface GroupOpenProps {
   board?: IBoard;
   group: IGroup;
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   showTasksHandler: (groupID: string) => Promise<void>;
 }
 
-const GroupOpen = ({ board, setGroups, setOriginalGroups, group, showTasksHandler }: GroupOpenProps) => {
+const GroupOpen = ({ board, group, showTasksHandler }: GroupOpenProps) => {
   const targetRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
 
@@ -47,21 +45,12 @@ const GroupOpen = ({ board, setGroups, setOriginalGroups, group, showTasksHandle
     <GroupStyle>
       <div className='setting'>
         <i ref={targetRef} onClick={openGroupMenuHandler} className='fa-solid fa-ellipsis '></i>
-        {isGroupMenuOpen && (
-          <GroupMenuPopup
-            board={board}
-            setGroups={setGroups}
-            setOriginalGroups={setOriginalGroups}
-            groupID={group?._id}
-            popupRef={popupRef}
-            onClose={hideGroupMenuHandler}
-          />
-        )}
+        {isGroupMenuOpen && <GroupMenuPopup board={board} groupID={group?._id} popupRef={popupRef} onClose={hideGroupMenuHandler} />}
       </div>
 
       <i onClick={() => showTasksHandler(group._id)} className='fa-solid fa-chevron-down'></i>
-      <GroupName group={group} setGroups={setGroups} />
-      <Tasks board={board} setGroups={setGroups} setOriginalGroups={setOriginalGroups} group={group} />
+      <GroupName group={group} />
+      <Tasks board={board} group={group} />
     </GroupStyle>
   );
 };

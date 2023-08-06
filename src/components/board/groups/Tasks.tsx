@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { IBoard } from '../../user/account';
@@ -9,11 +8,9 @@ import AddTask from './task/AddTask';
 interface TasksProps {
   board?: IBoard;
   group: IGroup;
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
 }
 
-const Tasks = ({ board, group, setGroups, setOriginalGroups }: TasksProps) => {
+const Tasks = ({ board, group}: TasksProps) => {
   return (
     <TasksStyle>
       <thead>
@@ -30,13 +27,11 @@ const Tasks = ({ board, group, setGroups, setOriginalGroups }: TasksProps) => {
           <Task
             key={task?._id}
             board={board}
-            setGroups={setGroups}
-            setOriginalGroups={setOriginalGroups}
             groupID={group?._id}
             task={task}
           />
         ))}
-        <AddTask groupID={group?._id} setGroups={setGroups} setOriginalGroups={setOriginalGroups} />
+        <AddTask groupID={group?._id}  />
       </tbody>
     </TasksStyle>
   );

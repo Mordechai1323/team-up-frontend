@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivet';
 
 import { IGroup } from '../../Board';
+import useGroups from '../../../../hooks/useGroups';
 
 interface IStatus {
   name: string;
@@ -11,8 +12,6 @@ interface IStatus {
 
 interface TaskStatusProps {
   status: IStatus;
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   groupID: string;
   taskID: string;
 }
@@ -20,8 +19,9 @@ interface StatusStyleProps {
   $background: string;
 }
 
-const TaskStatus = ({ status, groupID, taskID, setGroups, setOriginalGroups }: TaskStatusProps) => {
+const TaskStatus = ({ status, groupID, taskID }: TaskStatusProps) => {
   const axiosPrivate = useAxiosPrivate();
+  const { setGroups, setOriginalGroups } = useGroups();
   const targetRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
 

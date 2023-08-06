@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 
-import Layout from './components/layout';
 import LoginPage from './components/login/loginPage';
 import Page404 from './components/page404';
 import ForgotPassword from './components/login/forgotPassword/ForgotPassword.tsx';
@@ -17,7 +16,7 @@ import './App.css';
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<Layout />}>
+      <Route path='/'>
         <Route path='login' element={<LoginPage />} />
         <Route path='forgotPassword' element={<ForgotPassword />} />
         <Route path='unauthorized' element={<Unauthorized />} />

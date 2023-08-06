@@ -1,20 +1,19 @@
-import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivet';
 
 import { IGroup } from '../../Board';
+import useGroups from '../../../../hooks/useGroups';
 
 interface TaskMenuPopupProps {
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   groupID: string;
   taskID: string;
   popupRef: React.MutableRefObject<any>;
   taskName: string;
 }
 
-const TaskMenuPopup = ({ setGroups, setOriginalGroups, groupID, taskID, popupRef, taskName }: TaskMenuPopupProps) => {
+const TaskMenuPopup = ({ groupID, taskID, popupRef, taskName }: TaskMenuPopupProps) => {
   const axiosPrivate = useAxiosPrivate();
+  const { setGroups, setOriginalGroups } = useGroups();
   const controller = new AbortController();
 
   const updateTasks = () => {

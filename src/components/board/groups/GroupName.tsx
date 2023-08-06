@@ -1,17 +1,18 @@
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivet';
 
 import { IGroup } from '../Board';
+import useGroups from '../../../hooks/useGroups';
 
 interface GroupNameProps {
   group: IGroup;
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
 }
 
-const GroupName = ({ group, setGroups }: GroupNameProps) => {
-  const [newName, setNewName] = useState(group?.name);
+const GroupName = ({ group }: GroupNameProps) => {
   const axiosPrivet = useAxiosPrivate();
+  const { setGroups } = useGroups();
+  const [newName, setNewName] = useState(group?.name);
 
   const controller = new AbortController();
 

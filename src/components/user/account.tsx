@@ -40,13 +40,11 @@ const Account = () => {
   const controller = new AbortController();
 
   const getBoards = async () => {
-    console.log('role: ', auth.role);
     if (auth.role === 'team_leader') {
       try {
         const response = await axiosPrivate.get(`/boards/getAllTeamBoards/`, {
           signal: controller.signal,
         });
-        console.log(response.data);
         setBoards(response.data);
         setIsLoading(false);
       } catch (err: any) {
@@ -58,7 +56,6 @@ const Account = () => {
         const response = await axiosPrivate.get(`/boards/getMyBoards/`, {
           signal: controller.signal,
         });
-        console.log(response.data);
         setBoards(response.data);
         setIsLoading(false);
       } catch (err: any) {

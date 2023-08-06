@@ -2,7 +2,7 @@ import { useState, Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { IBoard } from '../../user/account';
-import { IGroup, ISorting } from '../Board';
+import { ISorting } from '../Board';
 import AddBoard from '../../sideBar/AddBoard';
 import Search from '../../sideBar/Search';
 import Invite from './Invite';
@@ -10,18 +10,18 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivet';
 import InviteForm from './InviteForm';
 import FilterByPerson from './FilterByPerson';
 import SortBy from './SortBy';
+import useGroups from '../../../hooks/useGroups';
 
 interface FiltersProps {
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   getBoards: () => Promise<void>;
   board?: IBoard;
   sorting: ISorting;
   setSorting: Dispatch<SetStateAction<ISorting>>;
 }
 
-const Filters = ({ setGroups, setOriginalGroups, getBoards, board, sorting, setSorting }: FiltersProps) => {
+const Filters = ({ getBoards, board, sorting, setSorting }: FiltersProps) => {
   const axiosPrivate = useAxiosPrivate();
+  const { setGroups, setOriginalGroups } = useGroups();
   const [isInviteOpen, setIsInviteOpen] = useState(false);
 
   const controller = new AbortController();

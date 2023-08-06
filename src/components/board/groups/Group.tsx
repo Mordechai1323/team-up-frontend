@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { IBoard } from '../../user/account';
@@ -6,16 +5,16 @@ import { IGroup } from '../Board';
 import GroupOpen from './GroupOpen';
 import GroupClose from './GroupClose';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivet';
+import useGroups from '../../../hooks/useGroups';
 
 interface GroupProps {
   board?: IBoard;
   group: IGroup;
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
 }
 
-const Group = ({ board, setGroups, setOriginalGroups, group }: GroupProps) => {
+const Group = ({ board, group }: GroupProps) => {
   const axiosPrivate = useAxiosPrivate();
+  const { setGroups, setOriginalGroups } = useGroups();
   const controller = new AbortController();
 
   const updateState = (groupID: string) => {
@@ -42,12 +41,10 @@ const Group = ({ board, setGroups, setOriginalGroups, group }: GroupProps) => {
         <GroupOpen
           board={board}
           group={group}
-          setGroups={setGroups}
-          setOriginalGroups={setOriginalGroups}
           showTasksHandler={showTasksHandler}
         />
       ) : (
-        <GroupClose board={board} group={group} setGroups={setGroups} showTasksHandler={showTasksHandler} />
+        <GroupClose board={board} group={group}  showTasksHandler={showTasksHandler} />
       )}
     </GroupStyle>
   );

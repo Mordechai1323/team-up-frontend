@@ -1,17 +1,17 @@
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivet';
 
 import { IGroup, ITask } from '../../Board';
+import useGroups from '../../../../hooks/useGroups';
 
 interface AddTaskProps {
   groupID: string;
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
 }
 
-const AddTask = ({ groupID, setGroups, setOriginalGroups }: AddTaskProps) => {
+const AddTask = ({ groupID }: AddTaskProps) => {
   const axiosPrivate = useAxiosPrivate();
+  const { setGroups, setOriginalGroups } = useGroups();
 
   const [task, setTask] = useState('');
 

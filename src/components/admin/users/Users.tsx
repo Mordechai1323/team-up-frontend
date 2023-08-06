@@ -4,6 +4,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivet';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import User from './User';
+import Loading from '../../Loading';
 
 export interface IUser {
   _id: string;
@@ -42,7 +43,9 @@ const Users = () => {
     getAllUsersHandler();
   }, [sort, reverse, search]);
 
-  return (
+  return isLoading ? (
+    <Loading />
+  ) : (
     <UsersStyle>
       <h2>List of users</h2>
       <table>

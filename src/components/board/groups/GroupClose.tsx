@@ -1,4 +1,4 @@
-import  { useState, useRef, useEffect, Dispatch , SetStateAction} from 'react';
+import { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { IBoard } from '../../user/account';
@@ -7,12 +7,11 @@ import GroupMenuPopup from './GroupMenuPopup';
 
 interface GroupCloseProps {
   board?: IBoard;
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
   group: IGroup;
   showTasksHandler: (groupID: string) => Promise<void>;
 }
 
-const GroupClose = ({ board, setGroups, showTasksHandler, group }: GroupCloseProps) => {
+const GroupClose = ({ board, showTasksHandler, group }: GroupCloseProps) => {
   const targetRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
 
@@ -74,9 +73,7 @@ const GroupClose = ({ board, setGroups, showTasksHandler, group }: GroupClosePro
     <GroupCloseStyle>
       <div className='setting'>
         <i ref={targetRef} onClick={openGroupMenuHandler} className='fa-solid fa-ellipsis'></i>
-        {isGroupMenuOpen && (
-          <GroupMenuPopup board={board} setGroups={setGroups} groupID={group?._id} popupRef={popupRef} onClose={hideGroupMenuHandler} />
-        )}
+        {isGroupMenuOpen && <GroupMenuPopup board={board} groupID={group?._id} popupRef={popupRef} onClose={hideGroupMenuHandler} />}
       </div>
       <div className='info'>
         <i onClick={() => showTasksHandler(group._id)} className='fa-solid fa-chevron-right'></i>

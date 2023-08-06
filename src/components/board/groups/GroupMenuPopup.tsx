@@ -1,21 +1,19 @@
-import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivet';
 
 import { IBoard } from '../../user/account';
-import { IGroup } from '../Board';
+import useGroups from '../../../hooks/useGroups';
 
 interface GroupMenuPopupProps {
   board?: IBoard;
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   popupRef: React.MutableRefObject<any>;
   groupID: string;
   onClose: () => void;
 }
 
-const GroupMenuPopup = ({ board, setGroups, setOriginalGroups, popupRef, groupID, onClose }: GroupMenuPopupProps) => {
+const GroupMenuPopup = ({ board, popupRef, groupID, onClose }: GroupMenuPopupProps) => {
   const axiosPrivate = useAxiosPrivate();
+  const { setGroups, setOriginalGroups } = useGroups();
   const controller = new AbortController();
 
   const addGroupHandler = async () => {

@@ -9,6 +9,7 @@ import Top from './top/Top';
 import Groups from './groups/Groups';
 import Loading from '../Loading';
 import useAuth from '../../hooks/useAuth';
+import useGroups from '../../hooks/useGroups';
 
 interface BoardProps {
   getBoards: () => Promise<void>;
@@ -41,13 +42,12 @@ export interface ISorting {
 const Board = ({ getBoards, boardID, boards }: BoardProps) => {
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
+  const { setGroups, originalGroups, setOriginalGroups } = useGroups();
   const nav = useNavigate();
   const location = useLocation();
 
   const [isLoading, setIsLoading] = useState(true);
   const [sorting, setSorting] = useState({ sortBy: '', filterByPerson: '' });
-  const [groups, setGroups] = useState<IGroup[]>([]);
-  const [originalGroups, setOriginalGroups] = useState<IGroup[]>([]);
   const [board, setBoard] = useState<IBoard>();
 
   const controller = new AbortController();
@@ -126,15 +126,8 @@ const Board = ({ getBoards, boardID, boards }: BoardProps) => {
   ) : (
     <BoardsStyle>
       <BoardsCenterStyle>
-        <Top
-          board={board}
-          getBoards={getBoards}
-          setGroups={setGroups}
-          setOriginalGroups={setOriginalGroups}
-          sorting={sorting}
-          setSorting={setSorting}
-        />
-        <Groups board={board} groups={groups} setGroups={setGroups} setOriginalGroups={setOriginalGroups} />
+        <Top board={board} getBoards={getBoards} sorting={sorting} setSorting={setSorting} />
+        <Groups board={board} />
       </BoardsCenterStyle>
     </BoardsStyle>
   );

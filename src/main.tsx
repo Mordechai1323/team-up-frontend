@@ -4,11 +4,14 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App';
+import { GroupsProvider } from './context/GroupsProvider';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <AuthProvider>
-      <App />
+      <GroupsProvider>
+        <App />
+      </GroupsProvider>
     </AuthProvider>
   </BrowserRouter>
 );

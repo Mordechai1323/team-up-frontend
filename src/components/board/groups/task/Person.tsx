@@ -1,20 +1,20 @@
-import { useEffect, useRef, useState, Dispatch, SetStateAction } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivet';
 
 import { IBoard } from '../../../user/account';
 import { IGroup, ITask } from '../../Board';
+import useGroups from '../../../../hooks/useGroups';
 
 interface PersonProps {
   board?: IBoard;
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
   groupID: string;
   task: ITask;
 }
 
-const Person = ({ board, setGroups, setOriginalGroups, groupID, task }: PersonProps) => {
+const Person = ({ board, groupID, task }: PersonProps) => {
   const axiosPrivate = useAxiosPrivate();
+  const { setGroups, setOriginalGroups } = useGroups();
   const controller = new AbortController();
   const targetRef = useRef<any>(null);
   const popupRef = useRef<any>(null);
@@ -27,9 +27,7 @@ const Person = ({ board, setGroups, setOriginalGroups, groupID, task }: PersonPr
         hidePersonHandler();
       }
     };
-
     document.addEventListener('click', handleClickOutside);
-
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
@@ -56,7 +54,7 @@ const Person = ({ board, setGroups, setOriginalGroups, groupID, task }: PersonPr
       }
       return group;
     };
-    
+
     setGroups((prevState) => prevState?.map(updateTask));
     setOriginalGroups((prevState) => prevState?.map(updateTask));
   };

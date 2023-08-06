@@ -1,22 +1,19 @@
-import { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 
 import { IBoard } from '../../user/account';
-import { IGroup } from '../Board';
 import Group from './Group';
+import useGroups from '../../../hooks/useGroups';
 
 interface GroupsProps {
   board?: IBoard;
-  groups: IGroup[];
-  setGroups: Dispatch<SetStateAction<IGroup[]>>;
-  setOriginalGroups: Dispatch<SetStateAction<IGroup[]>>;
 }
 
-const Groups = ({ board, groups, setGroups, setOriginalGroups }: GroupsProps) => {
+const Groups = ({ board }: GroupsProps) => {
+  const { groups } = useGroups();
   return (
     <GroupsStyle>
       {groups?.map((group) => (
-        <Group key={group._id} board={board} group={group} setGroups={setGroups} setOriginalGroups={setOriginalGroups} />
+        <Group key={group._id} board={board} group={group} />
       ))}
     </GroupsStyle>
   );

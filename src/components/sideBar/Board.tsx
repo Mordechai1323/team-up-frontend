@@ -8,8 +8,8 @@ import useAuth from '../../hooks/useAuth';
 
 interface BoardProps {
   setBoards: Dispatch<SetStateAction<IBoard[] | ITeamLeaderBoards[]>>;
-  board: IBoard;
   setBoardID: Dispatch<SetStateAction<string>>;
+  board: IBoard;
   isCurrentBoard: boolean;
 }
 interface BoardStyleProps {
